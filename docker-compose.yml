@@ -1,0 +1,44 @@
+# farmarcas-employees
+
+version: "3.6"
+
+services:
+  # Nginx Web Application
+  webserver:
+    container_name: farmarcas-employees-webserver
+    image: nginx:alpine
+    working_dir: /var/www/farmarcas-employees
+    volumes:
+      - .:/var/www/farmarcas-employees
+      - ./docker/nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+    ports:
+      - "80:80"
+    environment:
+      - NGINX_HOST=farmarcas.test
+
+  # PHP-FPM
+  php-fpm:
+    container_name: farmarcas-employees-php-fpm
+    build: docker/php-fpm
+    working_dir: /var/www/farmarcas-employees
+    volumes:
+      - .:/var/www/farmarcas-employees
+      - ./docker/php-fpm/php-ini-overrides.ini:/etc/php/8.1/fpm/conf.d/99-overrides.ini
+
+  # PostgreSQL
+  postgres:
+    container_name: farmarcas-employees-postgres
+    image: postgres:14.4-alpine3.16
+    volumes:
+      - farmarcas-employees-postgres-data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=farmarcas-employees
+      - POSTGRES_PASSWORD=farmarcas-employees
+      - POSTGRES_DB=farmarcas-employees
+    ports:
+      - "5432:5432"
+
+volumes:
+  # postgres-data
+  farmarcas-employees-postgres-data:
+    driver: local
