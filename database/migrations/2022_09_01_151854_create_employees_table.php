@@ -18,16 +18,14 @@ return new class extends Migration
             $table->string('name');
             $table->string('cpf')->unique();
             $table->string('email')->unique();
-            $table->string('document')->nullable();
-            $table->string('birth_date')->nullable();
-            $table->string('zip_code')->nullable();
-            $table->string('street')->nullable();
-            $table->string('number')->nullable();
-            $table->string('neighborhood')->nullable();
-            $table->string('city')->nullable();
-            $table->string('state')->nullable();
+            $table->string('document');
+            $table->string('birth_date');
+            $table->string('zip_code');
+            $table->string('street');
+            $table->string('number');
+            $table->string('city');
+            $table->string('state');
             $table->timestamps();
-            $table->softDeletes();
         });
     }
 
